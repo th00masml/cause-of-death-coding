@@ -26,6 +26,14 @@ Primary (full-test accuracy):
 - best baseline B_fuzzy = 0.707; commercial = 0.667 (CI [0.610, 0.720]).
 - gain = **−0.040** (needed +0.05). **KILLED-AT-4.**
 
+Split view:
+
+| subset | n | B_fuzzy | M_local qwen2.5:14b | M_comm claude-sonnet-5 |
+|---|---:|---:|---:|---:|
+| all | 300 | **0.707** | 0.560 | 0.667 |
+| HARD (novel) | 33 | 0.364 | 0.576 | **0.758** |
+| non-HARD | 267 | **0.749** | 0.558 | 0.655 |
+
 ```
 cd src
 python prepare.py && python baseline.py
@@ -54,6 +62,14 @@ ones; a frontier model earns its keep only on novel/rare terms and on
 class-balanced coverage. The local 14B is worse than the dictionary
 everywhere except the novel tail.
 
+Another way to see the split: on HARD, the commercial model gets **14**
+strings right that the fuzzy dictionary misses, while the dictionary
+rescues only **1** HARD string that the commercial model misses. On the
+267 non-HARD strings the direction flips: the dictionary gets **62**
+right that the commercial model misses, while the commercial model adds
+only **37** non-HARD rescues. So the benchmark is not saying "LLM bad"
+or "dictionary bad"; it is locating exactly where each instrument helps.
+
 ## Commercial vs local
 
 The commercial model beats the local 14B on every cut (0.667 vs 0.560
@@ -72,9 +88,85 @@ The model does not reproduce ICD10h's idiosyncratic codes at all. Its
 chapter accuracy is general medical knowledge, not recall of this
 dataset. Clean.
 
+## Error analysis
+
+The missed cases are interpretable and fit a small set of recurring
+failure modes.
+
+- **Archaic or lexicalized historical terms.** The commercial model helps
+  when the string is a real but rare historical medical term and the
+  nearest dictionary neighbour is lexically misleading: `quinsy`
+  (Respiratory), `prurigo` (Skin), `entozoa` (Infectious), `synovitis`
+  (Musculoskeletal).
+- **Explicit event / external-cause phrasing.** The commercial model also
+  helps when the string describes a cause as an event rather than as a
+  disease name: `beaten with iron bar`, `house fire`, `self-inflicted`.
+- **Very vague or symptom-only phrases.** The commercial model tends to
+  over-medicalize broad symptom descriptions that ICD10h keeps under
+  `Ill-defined`: `loss of blood`, `shortness of breath`, `gripes`.
+- **Boundary cases between infection, skin, and genitourinary coding.**
+  Some historical labels sit awkwardly between organ-system and disease
+  family interpretations, e.g. `noma pudendi` (gold: Genitourinary;
+  commercial: Infectious; fuzzy: Skin).
+
+The dictionary's strongest region is the opposite regime: strings that
+are close to previously seen terms, where lexical overlap almost solves
+the task by itself. That is why it remains best on the non-HARD bulk.
+
+## Example cases
+
+Illustrative HARD cases where the commercial model succeeds and the fuzzy
+dictionary fails:
+
+| string | gold | nearest dictionary neighbour | fuzzy | commercial |
+|---|---|---|---|---|
+| `quinsy` | Respiratory | `insanity` | Mental | **Respiratory** |
+| `glands in the lungs` | Respiratory | `glands inflammation` | Ill-defined | **Respiratory** |
+| `synovitis` | Musculoskeletal | `otitis` | Ear | **Musculoskeletal** |
+| `congenital chest mischief` | Congenital | `syphilis congenital` | Infectious | **Congenital** |
+| `died of grief` | Mental | `died at sea` | ExternalCause | **Mental** |
+| `self-inflicted` | ExternalCause | `influenza` | Respiratory | **ExternalCause** |
+
+Illustrative non-HARD cases where the dictionary is right and the
+commercial model is wrong:
+
+| string | gold | fuzzy | commercial |
+|---|---|---|---|
+| `cerebral congestion` | Nervous | **Nervous** | Circulatory |
+| `syncope supposed` | Ill-defined | **Ill-defined** | Circulatory |
+| `meningitis tubercular` | Infectious | **Infectious** | Nervous |
+| `uterus rupture` | Genitourinary | **Genitourinary** | Pregnancy |
+| `fracture skull supposed` | ExternalCause | **ExternalCause** | Injury |
+| `amputation arm` | ExternalCause | **ExternalCause** | Injury |
+
+These examples are not cherry-picked for drama; they are representative
+of the broader split. The commercial model is strongest when lexical
+nearest-neighbour lookup breaks on genuinely novel wording. The fuzzy
+dictionary is strongest when the correct historical coding convention is
+already implicit in nearby entries.
+
+## Primary vs exploratory claims
+
+The preregistered **primary endpoint** is full-test accuracy on the 300
+held-out strings. On that endpoint, the commercial model does **not**
+beat the best baseline by the required +0.05 margin, so the registered
+verdict stays **KILLED-AT-4**.
+
+The HARD result is therefore **secondary / exploratory**. It is the most
+interesting scientific signal in the run, but it does not overturn the
+primary verdict. The right reading is narrower: on novel historical
+terms, a frontier model appears useful; on the full benchmark as
+currently constructed, a fuzzy coding dictionary remains harder to beat.
+
 ## Limits
 
 - Chapter-level (20 classes), not full ICD10h codes.
-- HARD subset n=33 — the most interesting result has the least data;
-  a larger novel-string test is the obvious next step.
+- Single dataset (ICD10h English historic strings); external validity to
+  other archives, periods, or languages is untested.
+- HARD subset n=33 — the most interesting result has the least data, so
+  the novel-term advantage should be treated as suggestive rather than
+  definitive until replicated on a larger tail set.
+- The evaluation is only chapter-level (not full ICD10h coding), so the
+  benchmark tests broad categorization rather than exact historical code
+  assignment.
 - CLI scores single-sample (no temperature control); cached.
