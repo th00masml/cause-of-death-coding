@@ -50,8 +50,9 @@ but whether it helps in the cases where dictionary-based methods break.
 The core finding is nuanced rather than sensational: fuzzy lookup remains
 extremely strong on familiar historical strings, while the model-based
 approach adds meaningful value on the harder novel-term cases where direct
-lookup is weak. That is the practical insight this project is designed to
-surface.
+lookup is weak. In other words: **simple retrieval beats the LLM overall,
+but the frontier model helps on genuinely novel historical terms.** That
+is the practical insight this project is designed to surface.
 
 ## Task
 
@@ -91,4 +92,5 @@ python report.py
 
 This project is designed to be a clear, evidence-based benchmark rather than
 an AI demo: the goal is to understand where retrieval methods remain strong,
-and where model-based reasoning adds real value.
+where model-based reasoning adds real value, and where the benchmark still
+needs more data before strong claims are justified.
