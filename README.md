@@ -65,13 +65,27 @@ The project emphasizes not only overall accuracy, but also how performance
 changes on the harder subset of novel historical terms, where direct lookup
 is weak and generalization becomes more important.
 
+## Preprint
+
+The write-up is in `paper/` (`main.tex`, `refs.bib`, figures). Every
+number in it is recomputed from the cached outputs by
+`src/analysis_paper.py`, which also writes `outputs/paper_stats.json`.
+
+Two things the preprint adds over `RESULTS.md`: a third of the frontier
+model's errors are ICD10h coding conventions rather than medical errors
+(the scheme never uses the Injury chapter in its primary column; merging
+Injury into ExternalCause lifts the model from 0.667 to 0.713), and a
+similarity-routed dictionary-then-model hybrid reaches 0.750 with the
+preregistered cut and no tuning.
+
 ## Repository layout
 
-- Problem definition and task framing: `PROBLEM.md`
+- Problem definition and preregistered protocol: `PROBLEM.md`
 - Data provenance and licensing: `DATA-LICENSES.md`
 - Evaluation results and verdict: `RESULTS.md`
+- Preprint source and figures: `paper/`
 - Source code: `src/`
-- Model outputs and cached probes: `outputs/`
+- Model outputs, cached probes, and derived statistics: `outputs/`
 
 ## Run it
 
@@ -88,7 +102,12 @@ python baseline.py                    # majority + fuzzy (run first)
 python score.py local && python score.py comm
 python probe.py
 python report.py
+python analysis_paper.py            # exploratory stats + figures for paper/
 ```
+
+Note on the memorization probe: the 2026-08-09 run received empty
+responses from the CLI for all 30 items, so `probe_summary.json` reports
+it as inconclusive rather than as a clean zero. See `RESULTS.md`.
 
 This project is designed to be a clear, evidence-based benchmark rather than
 an AI demo: the goal is to understand where retrieval methods remain strong,

@@ -35,17 +35,33 @@ def main():
         out = generate_cli(PROMPT.format(s=t["string"]), model="claude-sonnet-5")
         m = re.search(r"[A-Z]\d\d(\.\d+)?", out.strip().upper())
         guess = m.group(0) if m else out.strip()[:12]
+        answered = bool(m)  # a code-shaped answer; empty/refusal is NOT a miss
         rec = {"string": t["string"], "gold": t["code"], "guess": guess,
-               "exact": guess == t["code"].upper(),
-               "base3_match": guess[:3] == t["code"].upper()[:3]}
+               "answered": answered,
+               "exact": answered and guess == t["code"].upper(),
+               "base3_match": answered and guess[:3] == t["code"].upper()[:3]}
         f.write(json.dumps(rec, ensure_ascii=False) + "\n")
         f.flush()
     f.close()
     rows = [json.loads(l) for l in open(RES)]
-    exact = sum(r["exact"] for r in rows) / len(rows)
-    base3 = sum(r["base3_match"] for r in rows) / len(rows)
-    print(f"probe n={len(rows)}  exact-code match={exact:.3f}  base-3char match={base3:.3f}")
-    json.dump({"n": len(rows), "exact_code": exact, "base3": base3},
+    # Backward compatibility with the 2026-08-09 run, which had no "answered" field.
+    for r in rows:
+        r.setdefault("answered", bool(re.fullmatch(r"[A-Z]\d\d(\.\d+)?", (r["guess"] or "").upper())))
+    n = len(rows)
+    n_ans = sum(r["answered"] for r in rows)
+    exact = sum(r["exact"] for r in rows) / n
+    base3 = sum(r["base3_match"] for r in rows) / n
+    if n_ans == 0:
+        verdict = "INCONCLUSIVE: no item received a code-shaped answer; cannot distinguish ignorance from refusal or a CLI artefact"
+    elif exact > 0.15:
+        verdict = "FLAG: non-trivial exact-code recall; model has likely seen ICD10h"
+    else:
+        verdict = "LOW: chapter accuracy rests on general medical knowledge"
+    print(f"probe n={n}  answered={n_ans}  exact-code match={exact:.3f}  base-3char match={base3:.3f}")
+    print(verdict)
+    json.dump({"n": n, "answered": n_ans, "exact_code": exact, "base3": base3,
+               "exact_code_among_answered": (sum(r["exact"] for r in rows) / n_ans) if n_ans else None,
+               "verdict": verdict},
               open(os.path.join(OUT, "probe_summary.json"), "w"), indent=2)
 
 

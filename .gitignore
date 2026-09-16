@@ -3,3 +3,9 @@ data/raw/
 __pycache__/
 *.pyc
 .DS_Store
+paper/*.aux
+paper/*.log
+paper/*.out
+paper/*.blg
+paper/*.pdf
+paper/hard_table.tex

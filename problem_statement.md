@@ -95,3 +95,21 @@ non-trivial (> 0.15), flag that the model has likely seen this specific
 scheme and read the chapter accuracy with that caveat; a low number means
 the chapter accuracy rests on general medical knowledge, which is the
 instrument working as intended.
+
+## Post-registration note (2026-09-16)
+
+Nothing above has been edited since the model runs. Two observations
+made after the runs, recorded here so the preregistration and the
+outcome can be read together:
+
+1. The memorization probe returned empty output for all 30 items, so the
+   fixed interpretation ("low exact-code match means the instrument is
+   working from general knowledge") does not apply; it presupposed that
+   the model would produce codes. The probe is reported as inconclusive.
+2. The Injury chapter (ICD-10 S–T) never occurs in the dataset: ICD10h
+   records the external cause in its primary column and the nature of
+   injury in a separate `ICD10hInjury` column. The 22-chapter label list
+   was fixed from the ICD-10 chapter structure before the data were
+   inspected, so Injury remained in the prompt as a distractor. The
+   consequences are quantified in `RESULTS.md` as a post hoc analysis and
+   do not alter the primary verdict.
