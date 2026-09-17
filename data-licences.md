@@ -27,6 +27,5 @@ English language historic strings" (University of Cambridge, 2024).
 - Commercial model via an authenticated CLI session, with no API key required.
   Single-sample outputs are cached under `outputs/`.
 
-## Not committed
 
 `data/raw/` (the ICD10h file) is gitignored; CC-BY and re-downloadable.
