@@ -152,6 +152,8 @@ held-out strings. On that endpoint, the commercial model does **not**
 beat the best baseline by the required +0.05 margin, so the registered
 verdict stays **KILLED-AT-4**.
 
+## Important implication
+
 The HARD result is therefore **secondary / exploratory**. It is the most
 interesting scientific signal in the run, but it does not overturn the
 primary verdict. The right reading is narrower: on novel historical
@@ -170,3 +172,4 @@ currently constructed, a fuzzy coding dictionary remains harder to beat.
   benchmark tests broad categorization rather than exact historical code
   assignment.
 - CLI scores single-sample (no temperature control); cached.
+- 
