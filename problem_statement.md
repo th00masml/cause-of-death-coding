@@ -83,7 +83,7 @@ and commercial vs local. Small n (33) -- reported as suggestive only.
 
 No threshold moves after seeing the model numbers.
 
-## Memorization probe (fixed now)
+## Memorization probe 
 
 The ICD10h dataset is public (CC-BY, 2024); a frontier model may have seen
 it. Chapter-level correctness for clear diseases (cholera -> Infectious)
