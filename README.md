@@ -80,8 +80,8 @@ preregistered cut and no tuning.
 
 ## Repository layout
 
-- Problem definition and preregistered protocol: `PROBLEM.md`
-- Data provenance and licensing: `DATA-LICENSES.md`
+- Problem definition and preregistered protocol: `problem_statement.md`
+- Data provenance and licensing: `data-licences.md`
 - Evaluation results and verdict: `results_stating.md`
 - Preprint source and figures: `paper/`
 - Source code: `src/`
