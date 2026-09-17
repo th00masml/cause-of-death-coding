@@ -136,6 +136,24 @@ for m in ["M_comm_sonnet5", "M_local_qwen14b"]:
 oracle = ((P["B_fuzzy"] == g) | (P["M_comm_sonnet5"] == g)).mean()
 print(f"oracle union {oracle:.3f}")
 STATS["oracle_union_fuzzy_sonnet5"] = float(oracle)
+
+print("== label asymmetry: Injury folded into ExternalCause (dictionary can never emit Injury) ==")
+STATS["folded"] = {}
+for m in ["M_comm_sonnet5", "M_local_qwen14b"]:
+    pm = np.where(P[m] == "Injury", "ExternalCause", P[m])
+    d_all = {}
+    for name, idx in [("all", ALL), ("hard", HARD), ("nonhard", NONHARD)]:
+        dd = [(pm[s] == g[s]).mean() - (P["B_fuzzy"][s] == g[s]).mean() for s in (rng.choice(idx, len(idx)) for _ in range(5000))]
+        ao, bo, pv = mcnemar_exact(P["B_fuzzy"], pm, idx)
+        d_all[name] = {"acc": acc(pm, idx), "ci95": boot_acc(pm, idx).round(3).tolist(), "diff_vs_fuzzy": acc(pm, idx) - acc(P["B_fuzzy"], idx),
+                       "diff_ci95": np.percentile(dd, [2.5, 97.5]).round(3).tolist(), "fuzzy_only": ao, "model_only": bo, "mcnemar_exact_p": pv}
+        print(f"{m} {name:8} acc {acc(pm, idx):.3f} diff {d_all[name]['diff_vs_fuzzy']:+.3f} CI {d_all[name]['diff_ci95']} McNemar {ao} vs {bo} p={pv:.3f}")
+    d_all["macro_f1"] = macro_f1(pm)
+    d_all["correct_count"] = int((pm == g).sum())
+    STATS["folded"][m] = d_all
+STATS["folded"]["fuzzy_correct_count"] = int((P["B_fuzzy"] == g).sum())
+STATS["folded"]["hybrid_tau_0.5_sonnet5_folded"] = acc(np.where(sim >= 0.5, P["B_fuzzy"], np.where(P["M_comm_sonnet5"] == "Injury", "ExternalCause", P["M_comm_sonnet5"])))
+
 json.dump(STATS, open(os.path.join(OUT, "paper_stats.json"), "w"), indent=1, default=float)
 print("wrote outputs/paper_stats.json")
 

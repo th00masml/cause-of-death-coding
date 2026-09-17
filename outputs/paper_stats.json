@@ -77,12 +77,12 @@
    0.019
   ],
   "B_fuzzy": [
-   0.6348013240904846,
+   0.6348013240904847,
    0.558,
    0.703
   ],
   "M_local_qwen14b": [
-   0.5678124790308593,
+   0.5678124790308592,
    0.499,
    0.635
   ],
@@ -124,7 +124,7 @@
    "mcnemar_exact_p": 0.015432364507309008
   },
   "macro_f1": {
-   "diff": 0.07425405638293858,
+   "diff": 0.07425405638293847,
    "ci95": [
     -0.017,
     0.156
@@ -312,64 +312,64 @@
  },
  "per_chapter_f1": {
   "B_fuzzy": {
-   "Skin": 0.5384615384615384,
-   "Nervous": 0.7586206896551724,
-   "Digestive": 0.7719298245614036,
-   "Neoplasm": 0.888888888888889,
-   "ExternalCause": 0.8405797101449275,
-   "Pregnancy": 0.8333333333333334,
-   "Infectious": 0.7951807228915664,
-   "Ear": 0.0,
-   "Musculoskeletal": 0.7272727272727274,
-   "Genitourinary": 0.5365853658536585,
-   "Respiratory": 0.4878048780487804,
-   "Mental": 0.5714285714285715,
+   "Circulatory": 0.8260869565217391,
    "Perinatal": 0.7142857142857143,
+   "Nervous": 0.7586206896551724,
+   "Musculoskeletal": 0.7272727272727274,
    "Blood": 0.5,
    "Endocrine/metabolic": 0.3333333333333333,
    "Congenital": 0.7499999999999999,
+   "Neoplasm": 0.888888888888889,
+   "Ear": 0.0,
+   "Genitourinary": 0.5365853658536585,
+   "Mental": 0.5714285714285715,
+   "ExternalCause": 0.8405797101449275,
+   "Skin": 0.5384615384615384,
+   "Infectious": 0.7951807228915664,
    "Ill-defined": 0.5526315789473684,
-   "Circulatory": 0.8260869565217391
+   "Pregnancy": 0.8333333333333334,
+   "Digestive": 0.7719298245614036,
+   "Respiratory": 0.4878048780487804
   },
   "M_local_qwen14b": {
-   "Skin": 0.631578947368421,
-   "Nervous": 0.6666666666666667,
-   "Digestive": 0.6666666666666666,
-   "Neoplasm": 0.88,
-   "ExternalCause": 0.052631578947368425,
-   "Pregnancy": 0.5,
-   "Infectious": 0.5625000000000001,
-   "Ear": 0.6666666666666666,
-   "Musculoskeletal": 0.8,
-   "Genitourinary": 0.744186046511628,
-   "Respiratory": 0.6153846153846154,
-   "Mental": 0.5454545454545454,
+   "Circulatory": 0.6666666666666667,
    "Perinatal": 0.22222222222222224,
+   "Nervous": 0.6666666666666667,
+   "Musculoskeletal": 0.8,
    "Blood": 0.5,
    "Endocrine/metabolic": 0.4,
    "Congenital": 0.8000000000000002,
+   "Neoplasm": 0.88,
+   "Ear": 0.6666666666666666,
+   "Genitourinary": 0.744186046511628,
+   "Mental": 0.5454545454545454,
+   "ExternalCause": 0.052631578947368425,
+   "Skin": 0.631578947368421,
+   "Infectious": 0.5625000000000001,
    "Ill-defined": 0.30000000000000004,
-   "Circulatory": 0.6666666666666667
+   "Pregnancy": 0.5,
+   "Digestive": 0.6666666666666666,
+   "Respiratory": 0.6153846153846154
   },
   "M_comm_sonnet5": {
-   "Skin": 0.6,
-   "Nervous": 0.6111111111111112,
-   "Digestive": 0.6133333333333333,
-   "Neoplasm": 0.962962962962963,
-   "ExternalCause": 0.6896551724137931,
-   "Pregnancy": 0.6666666666666666,
-   "Infectious": 0.6086956521739131,
-   "Ear": 0.8571428571428571,
-   "Musculoskeletal": 0.7500000000000001,
-   "Genitourinary": 0.8181818181818182,
-   "Respiratory": 0.7741935483870969,
-   "Mental": 0.8571428571428571,
+   "Circulatory": 0.7169811320754716,
    "Perinatal": 0.8333333333333333,
+   "Nervous": 0.6111111111111112,
+   "Musculoskeletal": 0.7500000000000001,
    "Blood": 0.6666666666666666,
    "Endocrine/metabolic": 0.5714285714285715,
    "Congenital": 0.9090909090909091,
+   "Neoplasm": 0.962962962962963,
+   "Ear": 0.8571428571428571,
+   "Genitourinary": 0.8181818181818182,
+   "Mental": 0.8571428571428571,
+   "ExternalCause": 0.6896551724137931,
+   "Skin": 0.6,
+   "Infectious": 0.6086956521739131,
    "Ill-defined": 0.2564102564102564,
-   "Circulatory": 0.7169811320754716
+   "Pregnancy": 0.6666666666666666,
+   "Digestive": 0.6133333333333333,
+   "Respiratory": 0.7741935483870969
   }
  },
  "routed_hybrid": {
@@ -794,7 +794,7 @@
    "rule": "dictionary chapter if best similarity >= tau, else model chapter",
    "tau_0.5_preregistered_cut": {
     "acc": 0.73,
-    "macro_f1": 0.6996517898058497
+    "macro_f1": 0.6996517898058496
    },
    "best_tau_posthoc_upper_bound": {
     "tau": 0.5,
@@ -1208,5 +1208,107 @@
    ]
   }
  },
- "oracle_union_fuzzy_sonnet5": 0.8766666666666667
+ "oracle_union_fuzzy_sonnet5": 0.8766666666666667,
+ "folded": {
+  "M_comm_sonnet5": {
+   "all": {
+    "acc": 0.7133333333333334,
+    "ci95": [
+     0.66,
+     0.763
+    ],
+    "diff_vs_fuzzy": 0.00666666666666671,
+    "diff_ci95": [
+     -0.06,
+     0.073
+    ],
+    "fuzzy_only": 52,
+    "model_only": 54,
+    "mcnemar_exact_p": 0.9226851594412759
+   },
+   "hard": {
+    "acc": 0.7575757575757576,
+    "ci95": [
+     0.606,
+     0.879
+    ],
+    "diff_vs_fuzzy": 0.3939393939393939,
+    "diff_ci95": [
+     0.212,
+     0.576
+    ],
+    "fuzzy_only": 1,
+    "model_only": 14,
+    "mcnemar_exact_p": 0.0009765625
+   },
+   "nonhard": {
+    "acc": 0.7078651685393258,
+    "ci95": [
+     0.655,
+     0.76
+    ],
+    "diff_vs_fuzzy": -0.04119850187265928,
+    "diff_ci95": [
+     -0.112,
+     0.026
+    ],
+    "fuzzy_only": 51,
+    "model_only": 40,
+    "mcnemar_exact_p": 0.29446978456853307
+   },
+   "macro_f1": 0.7224915847457163,
+   "correct_count": 214
+  },
+  "M_local_qwen14b": {
+   "all": {
+    "acc": 0.6566666666666666,
+    "ci95": [
+     0.6,
+     0.71
+    ],
+    "diff_vs_fuzzy": -0.050000000000000044,
+    "diff_ci95": [
+     -0.117,
+     0.02
+    ],
+    "fuzzy_only": 60,
+    "model_only": 45,
+    "mcnemar_exact_p": 0.17156469715424208
+   },
+   "hard": {
+    "acc": 0.7575757575757576,
+    "ci95": [
+     0.606,
+     0.879
+    ],
+    "diff_vs_fuzzy": 0.3939393939393939,
+    "diff_ci95": [
+     0.182,
+     0.606
+    ],
+    "fuzzy_only": 2,
+    "model_only": 15,
+    "mcnemar_exact_p": 0.002349853515625
+   },
+   "nonhard": {
+    "acc": 0.6441947565543071,
+    "ci95": [
+     0.588,
+     0.704
+    ],
+    "diff_vs_fuzzy": -0.10486891385767794,
+    "diff_ci95": [
+     -0.176,
+     -0.037
+    ],
+    "fuzzy_only": 58,
+    "model_only": 30,
+    "mcnemar_exact_p": 0.0037465093469812296
+   },
+   "macro_f1": 0.6131976811666334,
+   "correct_count": 197
+  },
+  "fuzzy_correct_count": 212,
+  "hybrid_tau_0.5_sonnet5_folded": 0.75
+ }
 }

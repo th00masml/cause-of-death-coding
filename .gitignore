@@ -9,3 +9,4 @@ paper/*.out
 paper/*.blg
 paper/*.pdf
 paper/hard_table.tex
+paper/*.bbl
